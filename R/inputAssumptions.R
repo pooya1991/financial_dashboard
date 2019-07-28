@@ -60,7 +60,10 @@ discount_factor_SoP_updater <- function(EoP){
 
 discount_factor_SoP_updater(discount_factor_EoP_updater(spot_rate, t_year, projection_quarter))
 
-
+df_discount <- t(data.frame(discount_factor_SoP_updater(discount_factor_EoP_updater(spot_rate, t_year, projection_quarter)),
+                            discount_factor_EoP_updater(spot_rate, t_year, projection_quarter),
+                            discount_factor_MoP_updater(spot_rate, t_year, projection_quarter)))
+rownames(df_discount) <- c("SoP", "EoP", "MoP")
 
 
 

@@ -1,4 +1,7 @@
 library(dplyr)
+library("readxl")
+
+calcs_base <- read_excel("data/PAA_Unearned_Model_dev.xlsx", sheet = "Calcs - Base")
 
 year <- rep(2018:2044, each = 4)[-length(year)]
 time <- seq(from = 0.25, to = 26.75, by = 0.25)
