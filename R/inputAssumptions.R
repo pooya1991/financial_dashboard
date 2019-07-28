@@ -1,6 +1,24 @@
 library("readxl")
 
-input_assumptions <- read_excel("data/PAA_Unearned_Model_dev.xlsx", sheet = "Input Assumptions")
+input_assumptions <- read_excel("../data/PAA_Unearned_Model_dev.xlsx", sheet = "Input Assumptions")
+
+recode_run_settings <- function(df) {
+ df <- mutate(df, `Run Settings` = recode(`Run Settings`,
+                                     "Projection Start Date" = "proj_start_date",
+                                     "Projection Year" = "proj_year",
+                                     "Projection Quarter" = "proj_quarter",
+                                     "Projection Start Time (Years)" = "proj_start_time",
+                                     "Currency" = "currency",
+                                     "Projection Period (Years)" = "projection_period",
+                                     "Underwriting Year" = "uw_year",
+                                     "Underwriting Quarter" = "uw_quarter",
+                                     "Type of contract (inwards vs outwards)" = "contract_type"
+                                     ))
+out_ls <- as.list(df[[2]]) %>% 
+   set_names(df[[1]])
+ out_ls$proj_start_date <- as.Date(as.integer(out_ls$proj_start_date), origin = "1899-12-31")
+ out_ls
+}
 
 df_run_settings <- input_assumptions[c(2:9, 11), c(1,3)]
 df_discount_assumptions_Q4_17_PFR <- input_assumptions[c(29, 31:37), c(2,4:111)]
