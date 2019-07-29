@@ -1,6 +1,9 @@
 library("readxl")
+library(dplyr)
+library(tidyr)
+library(purrr)
 
-input_assumptions <- read_excel("../data/PAA_Unearned_Model_dev.xlsx", sheet = "Input Assumptions")
+input_assumptions <- read_excel("data/PAA_Unearned_Model_dev.xlsx", sheet = "Input Assumptions")
 
 recode_run_settings <- function(df) {
  df <- mutate(df, `Run Settings` = recode(`Run Settings`,

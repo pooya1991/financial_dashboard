@@ -1,5 +1,5 @@
 library(shiny)
-source("../R/dashboard_tables.R")
+source("R/dashboard_tables.R")
 
 shinyServer(function(input, output, session) {
     # observe({

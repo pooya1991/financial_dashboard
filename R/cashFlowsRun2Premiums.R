@@ -1,6 +1,7 @@
 library(readxl)
 library(dplyr)
 library(tidyr)
+library(FSA)
 
 CashflowsRun1premiums <- read_excel("data/PAA_Unearned_Model_dev.xlsx", sheet = "CashflowsRun2Premiums")
 df_cashflow_premiums <- CashflowsRun1premiums[c(10:171), c(1:113)]
@@ -53,7 +54,16 @@ discounting <- function(input, discount, table) {
   return(output)
 }
 
-############################ Quarterly Cashflow ###################################
+pv_calculator <- function(input) {
+  otput <- input
+  m <- nrow(input)
+  for(i in 1:m) {
+    output[i, ] <- -rcumsum(as.numeric(input[i, ]))
+  }
+  return(output)
+}
+
+############################ Quarterly Cashflow ##############################################
 df_cashflow_premiums_input <- df_cashflow_premiums[c(3:11), c(6:113)]
 quarterly_cashflow_premiums <- df_cashflow_premiums[c(3:11), c(1:5)]
 
@@ -63,7 +73,7 @@ quarterly_cashflow_premiums[,5] <- rowSums(df_cashflow_premiums_input)
 
 
 
-############################ LIC Reserve #########################################
+############################ LIC Reserve #####################################################
 df_LIC_reserves_premiums_input <- df_cashflow_premiums[c(13:86), c(6:113)]
 LIC_reserves_premiums <- df_cashflow_premiums[c(13:86), c(1:5)]
 
@@ -72,7 +82,7 @@ LIC_reserves_premiums[,4] <- sign_detector(cashflow_type = LIC_reserves_premiums
 LIC_reserves_premiums[,5] <- rowSums(df_LIC_reserves_premiums_input)
 
 
-############################ LIC Reserves deterioration ###########################
+############################ LIC Reserves deterioration #######################################
 df_LIC_reserves_deterioration_premiums_input <- df_cashflow_premiums[c(88:161), c(6:113)]
 LIC_reserves_deterioration_premiums <- df_cashflow_premiums[c(88:161), c(1:5)]
 
@@ -80,7 +90,8 @@ LIC_reserves_deterioration_premiums[,3] <- time_type_detector(cashflow_type = LI
 LIC_reserves_deterioration_premiums[,4] <- sign_detector(cashflow_type = LIC_reserves_deterioration_premiums[,2], type_of_contract = df_run_settings[9,2])
 LIC_reserves_deterioration_premiums[,5] <- rowSums(df_LIC_reserves_deterioration_premiums_input)
 
-############################ Quarterly Cashflows - Undiscounted ###################
+
+############################ Quarterly Cashflows - Undiscounted ################################
 quarterly_cashflow_undiscounted_premiums_rows <- pull(CashflowsRun1premiums[c(177:179), 2])
 quarterly_cashflow_undiscounted_premiums <- quarterly_cashflow_premiums[pull(quarterly_cashflow_premiums[,2]) %in% quarterly_cashflow_undiscounted_premiums_rows,]
 
@@ -92,25 +103,61 @@ quarterly_cashflow_undiscounted_premiums[,5] <- rep(NA, nrow(quarterly_cashflow_
 
 
 
-############################ LIC Reserves - Undiscounted #########################
+############################ LIC Reserves deterioration - Undiscounted #########################
 quarterly_LIC_reserves_undiscounted_premiums <- LIC_reserves_premiums
-df_quarterly_LIC_reserves_undiscounted_premiums_output <- outpu_calculator(input = df_LIC_reserves_premiums_input, table = quarterly_LIC_reserves_undiscounted_premiums)
+df_quarterly_LIC_reserves_undiscounted_premiums_output <- outpu_calculator(input = df_LIC_reserves_deterioration_premiums_input, table = quarterly_LIC_reserves_undiscounted_premiums)
 quarterly_LIC_reserves_undiscounted_premiums[, 5] <- rowSums(df_cashflow_cashflow_undiscounted_premiums_output)
 
 
-############################ Discount Rates ######################################
+############################ LIC Reserves - Undiscounted ########################################
+#quarterly_LIC_reservesdeterioration__undiscounted_premiums <- LIC_reserves_deterioration_premiums
+#df_quarterly_LIC_reserves_deterioration_undiscounted_premiums_output <- outpu_calculator(input = LIC_reserves_deterioration_premiums, table = quarterly_LIC_reservesdeterioration__undiscounted_premiums)
+#quarterly_LIC_reservesdeterioration__undiscounted_premiums[, 5] <- rowSums(df_cashflow_cashflow_undiscounted_premiums_output)
+
+
+
+############################ Discount Rates ####################################################
 discount_rates_premiums <- CashflowsRun1premiums[c(333:335), c(2:4)]
 df_discount_rates_premiums <- df_discount
 
 
-############################ Quarterly Cashflows - Discounted ###################
-df_discount_cashflow_premiums <- discounting(input = df_cashflow_cashflow_undiscounted_premiums_output, discount = df_discount_rates_premiums, 
-                                         table = quarterly_cashflow_undiscounted_premiums)
+############################ Quarterly Cashflows - Discounted ###################################
 discount_cashflow_premiums <- quarterly_cashflow_undiscounted_premiums
+discount_cashflow_premiums[1, 3] <- "EoP"
+df_discount_cashflow_premiums <- discounting(input = df_cashflow_cashflow_undiscounted_premiums_output, discount = df_discount_rates_premiums, 
+                                         table = discount_cashflow_premiums)
 
 
-############################ LIC Reserves - Discounted ###################
+############################ LIC Reserves - Discounted ##########################################
 df_discount_LIC_reserves_premiums <- discounting(input = df_quarterly_LIC_reserves_undiscounted_premiums_output, discount = df_discount_rates_premiums, 
-                                         table = quarterly_LIC_reserves_undiscounted_premiums)
+                                             table = quarterly_LIC_reserves_undiscounted_premiums)
 discount_LIC_reserves_premiums <- quarterly_LIC_reserves_undiscounted_premiums
+
+
+
+############################ LIC Reserves deterioration - Discounted #############################
+#df_discount_LIC_reserves_deterioration_premiums <- discounting(input = df_quarterly_LIC_reserves_deterioration_undiscounted_premiums_output, discount = df_discount_rates_premiums, 
+#                                            table = quarterly_LIC_reserves_deterioration_undiscounted_premiums)
+#discount_LIC_reserves_deterioration_premiums <- quarterly_LIC_reserves_deterioration_undiscounted_premiums
+
+
+
+
+
+#################################################################################################
+#################################### PV of cashflows ############################################
+#################################################################################################
+
+############################ Quarterly Cashflows - PV ###########################################
+df_pv_cashflow_premiums <- pv_calculator(input = df_discount_cashflow_premiums)
+pv_cashflow_premiums <- discount_cashflow_premiums
+
+############################ LIC Reserves deterioration - PV ##################################################
+df_pv_LIC_reserves_premiums <- pv_calculator(input = df_discount_LIC_reserves_premiums)
+pv_LIC_reserves_premiums <- discount_LIC_reserves_premiums
+
+############################ LIC Reserves - PV ##################################################
+df_pv_LIC_reserves_deterioration_premiums <- pv_calculator(input = df_discount_LIC_reserves_deterioration_premiums)
+pv_LIC_reserves_deterioration_premiums <- discount_LIC_reserves_deterioration_premiums
+
 
