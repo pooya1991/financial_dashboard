@@ -24,27 +24,21 @@ colnames(risk_adjustment) <- time
 
 idxr_liability_for_incurred_claims <- c(61:67, 69:75, 77:83, 85:91, 93:99,
                                              101:107,109:115, 117:123, 126:131, 133:139)
-liability_for_incurred_claims <- sh_calcs_base[idxr_liability_for_incurred_claims, c(5:111)]
+liability_for_incurred_claims <- as.matrix(sh_calcs_base[idxr_liability_for_incurred_claims, c(5:111)])
+rownames(liability_for_incurred_claims) <- sh_calcs_base[idxr_liability_for_incurred_claims, 3][[1]]
+colnames(liability_for_incurred_claims) <- time
 
-############################################ Liability for incurred claims #########################################
-liability_for_incurred_claims_base <- calcs_base[, 3]
-df_Liability_for_incurred_claims_base <- calcs_base[c(61:67, 69:75, 77:83, 85:91, 93:99, 101:107,109:115, 117:123, 126:131, 133:139), c(5:111)]
+idxr_gross_acquisition_expenses <- 145:149
+gross_acquisition_expenses <- as.matrix(sh_calcs_base[idxr_gross_acquisition_expenses, c(5:111)])
+rownames(gross_acquisition_expenses) <- sh_calcs_base[idxr_gross_acquisition_expenses, 3][[1]]
+colnames(gross_acquisition_expenses) <- time
 
+idxr_net_acquisition_expenses <- 153:157
+net_acquisition_expenses <- as.matrix(sh_calcs_base[idxr_net_acquisition_expenses, c(5:111)])
+rownames(net_acquisition_expenses) <- sh_calcs_base[idxr_net_acquisition_expenses, 3][[1]]
+colnames(net_acquisition_expenses) <- time
 
-
-############################################ Liability for remaining coverage ######################################
-gross_of_acquisition_expenses_base <- calcs_base[145:149, 3]
-df_gross_of_acquisition_expenses_base <- calcs_base[145:149, c(5:111)]
-
-net_of_acquisition_expenses_base <- calcs_base[153:157, 3]
-df_net_of_acquisition_expenses_base <- calcs_base[153:157, c(5:111)]
-
-
-
-############################################ Amortisation of acquisition expenses ##################################
-amortisation_of_acquisition_expenses_base <- calcs_base[161:163, 3]
-df_amortisation_of_acquisition_expenses_base <- calcs_base[161:163, c(5:111)]
-
-
-  
-
+idxr_amortisation_acquisition_expenses <- 161:163
+amortisation_acquisition_expenses <- as.matrix(sh_calcs_base[idxr_amortisation_acquisition_expenses, c(5:111)])
+rownames(amortisation_acquisition_expenses) <- sh_calcs_base[idxr_amortisation_acquisition_expenses, 3][[1]]
+colnames(amortisation_acquisition_expenses) <- time
