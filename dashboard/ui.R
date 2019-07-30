@@ -6,34 +6,37 @@ source("../R/inputAssumptions.R")
 # set the maximum upload size to 30 MB
 options(shiny.maxRequestSize = 30*1024^2)
 
-default_inputs <- recode_run_settings(df_run_settings)
+qts <- c("Q1", "Q2", "Q3", "Q4")
 
 shinyUI(fluidPage(
     shinyjs::useShinyjs(),
     titlePanel("PAA Unearned Model"),
-    sidebarLayout(
-        sidebarPanel(
-            width = 3, h3("Run Settings"),
-            dateInput("proj_start_date", "Projection Start Date", default_inputs$proj_start_date),
-            numericInput("proj_year", "Projection Year", default_inputs$proj_year),
-            selectInput("proj_quarter", "Projection Quarter", default_inputs$proj_quarter),
-            numericInput("proj_start_time", "Projection Start Time (Years)", default_inputs$proj_start_time),
-            selectInput("currency", "Currency", default_inputs$currency),
-            numericInput("projection_period", "Projection Period (Years)", default_inputs$projection_period),
-            numericInput("uw_year", "Underwriting Year", default_inputs$uw_year),
-            selectInput("uw_quarter", "Underwriting Quarter", default_inputs$uw_quarter),
-            selectInput("contract_type", "Type of Contract", default_inputs$contract_type)
-        ),
-        
-        mainPanel(
-            tabsetPanel(
-                tabPanel(title = "balance_sheet",
-                         DT::DTOutput("balance_sheet")
-                ),
-                tabPanel(title = "income_statement",
-                         DT::DTOutput("income_statement")
-                )
+    # sidebarLayout(
+    sidebarPanel(
+        width = 3,
+        fileInput("xlsx_file", "Input File"),
+        div(id = "run_settings", h3("Run Settings"),
+            dateInput("proj_start_date", "Projection Start Date", NA_integer_),
+            numericInput("proj_year", "Projection Year", NA_integer_),
+            selectInput("proj_quarter", "Projection Quarter", choices = qts),
+            numericInput("proj_start_time", "Projection Start Time (Years)", NA_real_),
+            selectInput("currency", "Currency", NA_character_),
+            numericInput("projection_period", "Projection Period (Years)", NA_integer_),
+            numericInput("uw_year", "Underwriting Year", NA_integer_),
+            selectInput("uw_quarter", "Underwriting Quarter", qts),
+            selectInput("contract_type", "Type of Contract", c("Inwards", "Outwards"))
+        )
+    ),
+    
+    mainPanel(
+        tabsetPanel(
+            tabPanel(title = "balance_sheet",
+                     DT::DTOutput("balance_sheet")
+            ),
+            tabPanel(title = "income_statement",
+                     DT::DTOutput("income_statement")
             )
         )
     )
+    # )
 ))
