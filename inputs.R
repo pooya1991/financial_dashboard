@@ -16,7 +16,7 @@ grouping <- contract_details %>%
         )
     )
 
-contract_summarise <- group_by(grouping, group_type) %>% 
+contract_summed <- group_by(grouping, group_type) %>% 
     summarise(
         total_premium = sum(PREMIUM),
         total_claims_incurred = sum(`CLAIMS INCURRED`),
@@ -35,8 +35,12 @@ cashflow_timings <- read_xlsx(pth_input_assumptions, range = "B11:C23", col_type
 loss_ratios <- read_xlsx(pth_input_assumptions, range = "B27:D30", 
                          col_types = c("text", "numeric", "numeric"))
 
-earning_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>% 
+earning_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>%
     gather("term", "earning", -`Cohort Name`)
+
+# read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>% 
+#     as.matrix() %>% 
+#     (function(x) {rownames(x) <- x[, 1]; x[, -1]})
 
 payment_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>% 
     gather("term", "payment", -`Cohort Name`)
