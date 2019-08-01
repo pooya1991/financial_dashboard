@@ -44,3 +44,5 @@ C29 <- filter(loss_ratios, `Cohort Name` == "2019_MEDICAL_INDIVIDUAL_NON_ONEROUS
 
 total_cashflows <- apply(cashflows, 1, sum, na.rm = TRUE)
 total_cashflows["Premiums Received"] * 0.5 * .1
+
+attr_payments_qs <- 1:11

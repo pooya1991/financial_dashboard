@@ -42,7 +42,7 @@ earning_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>
 #     as.matrix() %>% 
 #     (function(x) {rownames(x) <- x[, 1]; x[, -1]})
 
-payment_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(33:36)) %>% 
+payment_pattern <- read_xlsx(pth_input_assumptions, range = cell_rows(39:42)) %>% 
     gather("term", "payment", -`Cohort Name`)
 
 onerosity_criteria <- read_xlsx(pth_input_assumptions, range = "B45:E47")
