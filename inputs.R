@@ -31,7 +31,12 @@ term <- read_xlsx(pth_input_assumptions, range = "E3:T3",
                   col_names = FALSE, col_types = "numeric") %>% 
     as.matrix() %>% drop() %>% unname()
 
-cashflow_timings <- read_xlsx(pth_input_assumptions, range = "B11:C23", col_types = "text")
+cashflow_timings <- read_xlsx(pth_input_assumptions, range = "B11:C23", col_types = "text") %>% 
+    mutate(sign = ifelse(Timings == "SoP", 1L, -1L))
+
+signs <- cashflow_timings[["sign"]]
+names(signs) <- cashflow_timings[["Cashflows item"]]
+
 loss_ratios <- read_xlsx(pth_input_assumptions, range = "B27:D30", 
                          col_types = c("text", "numeric", "numeric"))
 
