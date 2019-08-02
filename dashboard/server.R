@@ -18,7 +18,6 @@ shinyServer(function(input, output, session) {
         updateNumericInput(session, "projection_period", value = default_inputs$projection_period)
         updateNumericInput(session, "uw_year", value = default_inputs$uw_year)
         updateSelectInput(session, "uw_quarter", selected = default_inputs$uw_quarter)
-        updateSelectInput(session, "contract_type", selected = default_inputs$contract_type)
     })
     
     output$balance_sheet <- DT::renderDT({
