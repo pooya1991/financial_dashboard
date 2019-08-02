@@ -26,7 +26,8 @@ shinyUI(dashboardPage(
                      )
             ),
             tabPanel(title = "Input Files",
-                     fileInput("xlsx_file", "Input File")
+                     fileInput("xlsx_file", "Upload Input Assumptions"),
+                     fileInput("pas_data", "Upload Pas Data")
             )
         )
     ),
