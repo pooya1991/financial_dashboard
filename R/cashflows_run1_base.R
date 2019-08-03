@@ -1,3 +1,6 @@
+source("R/inputs.R")
+source("R/utils.R")
+
 # setting things up -------------------------------------------------------
 
 cf_run1_base <- new.env()
