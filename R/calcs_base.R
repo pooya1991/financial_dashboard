@@ -5,6 +5,7 @@ source("R/cashflows_run1_base.R")
 
 calc_base <- new.env()
 ac_cf <- new.env(parent = calc_base)
+ra_cf <- new.env(parent = calc_base)
 lc_cf <- new.env(parent = calc_base)
 lfic_cf <- new.env(parent = calc_base)
 lfrc_cf <- new.env(parent = calc_base)
@@ -63,7 +64,7 @@ local(envir = lc_cf, {
 # Risk Adjustment Cashflows --------------------------------------------------------
 
 local(envir = ra_cf, {
-    `Risk Adjustment` <- rep(0, 16)
+    `Risk Adjustment SoP` <- rep(0, 16)
     `Interest accrued on opening RA` <- rep(0, 16)
     `Emergence of risk adjustment during the quarter` <- rep(0, 16)
     `Interest accrued on emerging risk adjustment` <- rep(0, 16)
@@ -72,11 +73,11 @@ local(envir = ra_cf, {
     `Revaluation of risk adjustment for change in economic assumptions` <- rep(0, 16)
     `Change in RA` <- rep(0, 16)
     `Interest on change in RA` <- rep(0, 16)
-    `Risk Adjustment` <- rep(0, 16)
-    risk_adjustment <- rbind(`Risk Adjustment`, `Interest accrued on opening RA`, `Emergence of risk adjustment during the quarter`,
+    `Risk Adjustment EoP` <- rep(0, 16)
+    risk_adjustment <- rbind(`Risk Adjustment SoP`, `Interest accrued on opening RA`, `Emergence of risk adjustment during the quarter`,
                              `Interest accrued on emerging risk adjustment`, `Release in RA`, `Change in estimate of risk adjustment`,
                              `Revaluation of risk adjustment for change in economic assumptions`, `Change in RA`,
-                             `Interest on change in RA`, `Risk Adjustment`)
+                             `Interest on change in RA`, `Risk Adjustment EoP`)
 })
 
 
