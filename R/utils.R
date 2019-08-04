@@ -18,6 +18,3 @@ timing_sum <- function(df, timing_type) {
     return(net_type)
 }
 
-timing_type <- "EoP"
-df <- ac_cf$asset_cashflow
-timing_sum(df, timing_type)

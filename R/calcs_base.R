@@ -14,10 +14,10 @@ aoae_cf <- new.env(parent = calc_base)
 
 local(envir = ac_cf, {
     `Premiums Received` <- qt_cf$cashflows["Premiums Received", ]
-    `Initial Expenses` <- rep(0, length(`Premium Received`))
-    `Maintenance Expenses` <- rep(0, length(`Premium Received`))
+    `Initial Expenses` <- rep(0, length(`Premiums Received`))
+    `Maintenance Expenses` <- rep(0, length(`Premiums Received`))
     `Initial Commission` <- -qt_cf$cashflows["Initial Commission", ]
-    `Renewal Commission` <- rep(0, length(`Premium Received`))
+    `Renewal Commission` <- rep(0, length(`Premiums Received`))
     `Attritional Payments` <- colSums(qt_cf_undiscounted$attr_payments_mat, na.rm = T)
     `Large Payments` <- rep(0, length(`Renewal Commission`))
     `Cat Payments` <- rep(0, length(`Renewal Commission`))
@@ -38,10 +38,10 @@ local(envir = ac_cf, {
 
 local(envir = lc_cf, {
     `Premiums Received` <- qt_cf$cashflows["Premiums Received", ]
-    `Initial Expenses` <- rep(0, length(`Premium Received`))
-    `Maintenance Expenses` <- rep(0, length(`Premium Received`))
+    `Initial Expenses` <- rep(0, length(`Premiums Received`))
+    `Maintenance Expenses` <- rep(0, length(`Premiums Received`))
     `Initial Commission` <- -qt_cf$cashflows["Initial Commission", ]
-    `Renewal Commission` <- rep(0, length(`Premium Received`))
+    `Renewal Commission` <- rep(0, length(`Premiums Received`))
     `Attritional Payments` <- colSums(qt_cf_undiscounted$attr_payments_mat, na.rm = T)
     `Large Payments` <- rep(0, length(`Renewal Commission`))
     `Cat Payments` <- rep(0, length(`Renewal Commission`))
