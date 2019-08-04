@@ -35,7 +35,7 @@ local(envir = net_asset_bs, {
 })
 
 local(envir = capital_and_reserves_bs, {
-    `Liabilities & Equity` <- net_asset_bs$`Net assets` + liabilities_bs$`Total Liability `
+    `Liabilities & Equity` <- net_asset_bs$`Net assets` + liabilities_bs$`Total Liability`
 })
 
 local(envir = profit_loss_bs, {
