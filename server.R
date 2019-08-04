@@ -7,7 +7,7 @@ shinyServer(function(input, output, session) {
         shinyjs::toggleState("run_settings", !is.null(input$xlsx_file))
     })
     
-    observe(print(bot_is$`Profit or Loss`))
+    observe(print(input$run1_base))
     
     observeEvent(input$xlsx_file, {
         input_assumptions <- readxl::read_excel(input$xlsx_file$datapath, sheet = "Input Assumptions")
@@ -23,27 +23,58 @@ shinyServer(function(input, output, session) {
         updateSelectInput(session, "uw_quarter", selected = default_inputs$uw_quarter)
     })
     
+    observeEvent(input$run_onerousity, {
+        showModal(modalDialog(
+            "Onerousity test ran successfully",
+            easyClose = TRUE,
+            footer = NULL
+        ))
+    })
+    
+    observeEvent(input$coh_form, {
+        showModal(modalDialog(
+            "Cohort Formation ran successfully",
+            easyClose = TRUE,
+            footer = NULL
+        ))
+    })
+    
+    observeEvent(input$run1_base, {
+        showModal(modalDialog(
+            "Run1 base ran successfully",
+            easyClose = TRUE,
+            footer = NULL
+        ))
+    })
+    
     output$balance_sheet <- DT::renderDT({
-        if (is.null(input$xlsx_file)) {
-            balance_sheet <- character(); bs_base <- double(); bs_premiums <- double()
+        if (input$run1_base == 0) {
+            out_bs <- tibble(balance_sheet = character(), bs_base = double())
+        } else {
+            out_bs <- balance_sheet2
         }
         
-        DT::datatable(balance_sheet2,
-        colnames = c("Balance Sheet", "Base"), class = "strip",
-        options = list(paging = FALSE, searching = FALSE, rowCallback = JS(rowCallback_bs))) #%>% 
+        
+        DT::datatable(out_bs,
+        colnames = c("Balance Sheet", "Base"), class = "strip", 
+        options = list(paging = FALSE, searching = FALSE, info = FALSE,
+                       rowCallback = JS(rowCallback_bs))) #%>% 
             # DT::formatRound(c(2, 3), digits = 0, mark = ",") %>%
             # DT::formatStyle(c(2, 3), c(2, 3), target = "cell",
             #                 color = DT::styleInterval(-1e-5, c('red', 'black')))
         })
     
     output$income_statement <- DT::renderDT({
-        if (is.null(input$xlsx_file)) {
-            income_statement <- character(); is_base <- double(); is_premiums <- double()
+        if (input$run1_base == 0) {
+            out_is <- tibble(income_statement = character(), is_base = double())
+        } else {
+            out_is <- income_statement2
         }
         
-        DT::datatable(income_statement2,
+        DT::datatable(out_is,
         colnames = c("Income Statement", "Base"), class = "strip",
-        options = list(paging = FALSE, searching = FALSE, rowCallback = JS(rowCallback_is)))
+        options = list(paging = FALSE, searching = FALSE, info = FALSE,
+                       rowCallback = JS(rowCallback_is)))
             # DT::formatRound(c(2, 3), digits = 0, mark = ",") %>% 
             # DT::formatStyle(c(2, 3), c(2, 3), target = "cell", 
             #                 color = DT::styleInterval(-1e-5, c('red', 'black')))

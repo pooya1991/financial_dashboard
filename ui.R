@@ -26,8 +26,17 @@ shinyUI(dashboardPage(
                      )
             ),
             tabPanel(title = "Input Files",
-                     fileInput("xlsx_file", "Upload Input Assumptions"),
-                     fileInput("pas_data", "Upload Pas Data")
+                     fileInput("input_file", "Upload Input Assumptions"),
+                     fileInput("pas_data", "Upload Pas Data"),
+                     br(),
+                     tags$div(
+                         HTML("<h3 style = 'padding-left:15px'>Run:</h3>")
+                     ),
+                     actionButton("run_onerousity", "Onerousity Test", width = 150),
+                     br(),
+                     actionButton("coh_form", "Cohort Formation", width = 150),
+                     br(),
+                     actionButton("run1_base", "Run1 - Base", width = 150)
             )
         )
     ),
