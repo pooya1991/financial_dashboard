@@ -1,10 +1,13 @@
 library(shiny)
-source("../R/dashboard_tables.R")
+source("R/dashboard_tables.R")
+source("globals.R")
 
 shinyServer(function(input, output, session) {
     observe({
         shinyjs::toggleState("run_settings", !is.null(input$xlsx_file))
     })
+    
+    observe(print(bot_is$`Profit or Loss`))
     
     observeEvent(input$xlsx_file, {
         input_assumptions <- readxl::read_excel(input$xlsx_file$datapath, sheet = "Input Assumptions")

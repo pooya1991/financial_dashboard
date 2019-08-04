@@ -3,7 +3,7 @@ library(shinydashboard)
 library(dplyr)
 library(tidyr)
 library(purrr)
-source("../R/inputAssumptions.R")
+source("R/inputAssumptions.R")
 # set the maximum upload size to 30 MB
 options(shiny.maxRequestSize = 30*1024^2)
 
