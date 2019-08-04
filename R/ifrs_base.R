@@ -44,7 +44,6 @@ local(envir = profit_loss_bs, {
  
 
 
-
 # Income statement  -------------------------------------------------------
 
 local(envir = top_is, {
@@ -88,7 +87,61 @@ local(envir = bot_is, {
 })
 
 
+# Dashboard ---------------------------------------------------------------
 
+balance_sheet <- local({
+    Assets <- NA
+    Invested <- asset_bs$Invested
+    FVTOCI <- asset_bs$FVTOCI
+    `FVTP&L` <- asset_bs$`FVTP&L`
+    `Total Assets`  <- asset_bs$`Total Assets`
+    Liabilities <- NA
+    `Risk Adjustment` <- liabilities_bs$`Risk Adjustment`
+    `Liability for incurred claims` <- liabilities_bs$`Liability for incurred claims`
+    `Liability for remaining coverage` <- liabilities_bs$`Liability for remaining coverage`
+    `Loss Component` <- liabilities_bs$`Loss Component`
+    `Total Liability` <- liabilities_bs$`Total Liability`
+    `Net assets` <- net_asset_bs$`Net assets`
+    `Capital and Reserves` <- NA
+    `Liabilities & Equity` <- capital_and_reserves_bs$`Liabilities & Equity`
+    `Profit (Loss) in year` <- profit_loss_bs$`Profit (Loss) in year`
+    
+    
+    rbind(Assets,
+          Invested, 
+          FVTOCI, 
+          `FVTP&L`, 
+          `Total Assets`, 
+          Liabilities,
+          `Risk Adjustment`, 
+          `Liability for incurred claims`, 
+          `Liability for remaining coverage`, 
+          `Loss Component`, 
+          `Total Liability`, 
+          `Net assets`, 
+          `Capital and Reserves`, 
+          `Liabilities & Equity`, 
+          `Profit (Loss) in year`)
+})
+
+
+income_statement <- local({
+    `Allocation of premium for coverage period` <- top_is$`Allocation of premium for coverage period`
+    `Adjustment to revenue for loss component` <- top_is$`Adjustment for loss component`
+    `Total Insurance contract revenue` <- top_is$`Total Insurance contract revenue`
+    `Claims incurred` <- mid_is$`Incurred claims emerging during the quarter`
+    `Expenses incurred` <- mid_is$`Expenses incurred`
+    `Amortisation of acquisition costs` <- mid_is$`Amortisation of acquisition costs`
+    `Release of risk margin` <- mid_is$`Release / Emergence of risk adjustment`
+    `Change in estimate of future cashflows` <- mid_is$`Changes in estimates of future cash flows`
+    `Loss Component` <- mid_is$`Loss Component`
+    `Insurance Service Expense` <- mid_is$`Insurance Service Expense`
+    `Insurance Service Result` <- mid_is$`Insurance Service Result`
+    `Investment Income` <- bot_is$`Investment income`
+    `Interest on insurance liability` <- bot_is$`Interest on insurance liability`
+    `Insurance Finance Expenses` <- bot_is$`Insurance Finance Expenses`
+    `Profit or Loss` <- bot_is$`Profit or Loss`
+})
 
 
 
