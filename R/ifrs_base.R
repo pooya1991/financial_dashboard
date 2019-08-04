@@ -48,7 +48,7 @@ local(envir = profit_loss_bs, {
 # Income statement  -------------------------------------------------------
 
 local(envir = top_is, {
-    `Allocation of premium for coverage period` <- lfrc_cf$`Gross of acquisition expenses`["Release", 1]
+    `Allocation of premium for coverage period` <- -lfrc_cf$`Gross of acquisition expenses`["Release", 1]
     `Adjustment for loss component` <- 0
     `Total Insurance contract revenue` <- sum(`Allocation of premium for coverage period`, `Adjustment for loss component`)
 })
@@ -81,9 +81,9 @@ local(envir = mid_is, {
 
 local(envir = bot_is, {
     `Investment income` <- ac_cf$`Investment income`[1]
-    `Interest on reserves` <- -(lfic_cf$`Interest accrued on starting reserve`[1] * 0 + lfic_cf$`Interest accrued on liability converted to LIC`[1] + 
+    `Interest on insurance liability` <- -(lfic_cf$`Interest accrued on starting reserve`[1] * 0 + lfic_cf$`Interest accrued on liability converted to LIC`[1] + 
         lfic_cf$`Revaluation of future cashflows for Emerging experience`[1] + lfic_cf$`Interest on deteriorations`[1] + 0)
-    `Insurance Finance Expenses` <- `Investment income` + `Interest on reserves`
+    `Insurance Finance Expenses` <- `Investment income` + `Interest on insurance liability`
     `Profit or Loss` <- `Insurance Finance Expenses` + mid_is$`Insurance Service Result`
 })
 
