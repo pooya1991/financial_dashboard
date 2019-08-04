@@ -243,7 +243,7 @@ local(envir = lfrc_cf, {
     `Gross of acquisition expenses` <- rbind(`Liability at SoP`, `New Premium`, Release, `Interest Accrued`, `Liability at EoP`)
     
     
-    Release <- -qt_cf$`Earned Premium (gross of commission)`
+    Release <- -qt_cf$`Earned Premium (net of commission)`
     `New Premium` <- c(382500, rep(0, (length(Release)-1)))
     `Liability at EoP` <- floor(cumsum(`New Premium` + Release))
     `Interest Accrued` <- rep(0, length(Release))
@@ -256,12 +256,12 @@ local(envir = lfrc_cf, {
 
 # Amortisation of acquisition expenses ------------------------------------
 
-local(envir = lfrc_cf, {
+local(envir = aoae_cf, {
     `LRC release gross of acquisition expenses` <- lfrc_cf$`Gross of acquisition expenses`["Release", ]
     `LRC release net of acquisition expenses` <- lfrc_cf$`Net of acquisition expenses`["Release", ]
     `Amortisation of acquisition expenses` <- `LRC release gross of acquisition expenses` - `LRC release net of acquisition expenses`
     
-    `Amortisation of acquisition expenses` <- rbind(`LRC release gross of acquisition expenses`, 
+    `Amortisation of acquisition expenses df` <- rbind(`LRC release gross of acquisition expenses`, 
                                                     `LRC release net of acquisition expenses`,
                                                     `Amortisation of acquisition expenses`)
 })
@@ -270,6 +270,7 @@ local(envir = lfrc_cf, {
 
 
 
+aoae_cf$`Amortisation of acquisition expenses df`
 
 
 
