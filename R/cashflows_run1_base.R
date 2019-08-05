@@ -1,5 +1,5 @@
-source("R/inputs.R")
-source("R/utils.R")
+source("R/inputs.R", local = TRUE)
+source("R/utils.R", local = TRUE)
 
 # setting things up -------------------------------------------------------
 

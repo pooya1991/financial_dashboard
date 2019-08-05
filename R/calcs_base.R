@@ -1,6 +1,6 @@
 library(dplyr)
 
-source("R/cashflows_run1_base.R")
+source("R/cashflows_run1_base.R", local = TRUE)
 
 
 calc_base <- new.env()

@@ -4,9 +4,9 @@ library(purrr)
 library(stringr)
 library(tidyr)
 
-pth_contract_details <- "data/files/CONTRACT_DETAILS_PAS.xlsx"
-pth_grouping <- "data/files/GROUPING.xlsx"
-pth_input_assumptions <- "data/files/INPUT_ASSUMPTIONS.xlsx"
+# pth_contract_details <- "data/files/CONTRACT_DETAILS_PAS.xlsx"
+# pth_grouping <- "data/files/GROUPING.xlsx"
+# pth_input_assumptions <- "data/files/INPUT_ASSUMPTIONS.xlsx"
 
 contract_details <- readxl::read_xlsx(pth_contract_details)
 grouping <- contract_details %>% 

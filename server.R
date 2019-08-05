@@ -23,6 +23,7 @@ shinyServer(function(input, output, session) {
         updateSelectInput(session, "uw_quarter", selected = default_inputs$uw_quarter)
     })
     
+
     observeEvent(input$run_onerousity, {
         showModal(modalDialog(
             "Onerousity test ran successfully",
@@ -47,36 +48,28 @@ shinyServer(function(input, output, session) {
         ))
     })
     
+    dashboard_data <- reactiveValues(out_bs = tibble(balance_sheet = character(), bs_base = double()),
+                                     out_is = tibble(income_statement = character(), is_base = double()))
+    observe({
+        if (is.null(input$input_file) | is.null(input$pas_data)) return()
+        pth_input_assumptions <- input$input_file$datapath
+        pth_contract_details <- input$pas_data$datapath
+        source("R/ifrs_base.R", local = TRUE)
+        dashboard_data$out_bs <- balance_sheet2
+        dashboard_data$out_is <- income_statement2
+    })
+    
     output$balance_sheet <- DT::renderDT({
-        if (input$run1_base == 0) {
-            out_bs <- tibble(balance_sheet = character(), bs_base = double())
-        } else {
-            out_bs <- balance_sheet2
-        }
-        
-        
-        DT::datatable(out_bs,
+        DT::datatable(dashboard_data$out_bs,
         colnames = c("Balance Sheet", "Base"), class = "strip", 
         options = list(paging = FALSE, searching = FALSE, info = FALSE,
-                       rowCallback = JS(rowCallback_bs))) #%>% 
-            # DT::formatRound(c(2, 3), digits = 0, mark = ",") %>%
-            # DT::formatStyle(c(2, 3), c(2, 3), target = "cell",
-            #                 color = DT::styleInterval(-1e-5, c('red', 'black')))
+                       rowCallback = JS(rowCallback_bs)))
         })
     
     output$income_statement <- DT::renderDT({
-        if (input$run1_base == 0) {
-            out_is <- tibble(income_statement = character(), is_base = double())
-        } else {
-            out_is <- income_statement2
-        }
-        
-        DT::datatable(out_is,
+        DT::datatable(dashboard_data$out_is,
         colnames = c("Income Statement", "Base"), class = "strip",
         options = list(paging = FALSE, searching = FALSE, info = FALSE,
                        rowCallback = JS(rowCallback_is)))
-            # DT::formatRound(c(2, 3), digits = 0, mark = ",") %>% 
-            # DT::formatStyle(c(2, 3), c(2, 3), target = "cell", 
-            #                 color = DT::styleInterval(-1e-5, c('red', 'black')))
         })
 })

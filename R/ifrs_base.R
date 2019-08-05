@@ -1,4 +1,4 @@
-source("R/calcs_base.R")
+source("R/calcs_base.R", local = TRUE)
 
 
 ifrs_base <- new.env()

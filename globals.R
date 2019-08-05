@@ -1,8 +1,3 @@
-source("R/ifrs_base.R")
-
-library(DT)
-dat <- iris[1:4]
-
 rowCallback_bs <- c(
     "function(row, dat, displayNum, index){",
     "  if(index == 0 || index == 4 || index == 5 || index == 10 || index == 11 || index == 12 || index == 14){",
