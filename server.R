@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
     })
     
     test_data <- reactiveValues(onerosity_df = NULL)
-    event_status <- reactiveValues(onerousity_test = FALSE, cohort_test = FALSE)
+    event_status <- reactiveValues(onerousity_test = FALSE, cohort_test = FALSE, console = FALSE)
     
     observeEvent(input$run_onerousity, {
         if (is.null(input$input_file) | is.null(input$pas_data)) {
@@ -97,9 +97,9 @@ shinyServer(function(input, output, session) {
             easyClose = TRUE,
             footer = NULL
         ))
-        # browser()
         dashboard_data$out_bs <- balance_sheet2
         dashboard_data$out_is <- income_statement2
+        if (event_status$console) browser()
     })
     
     dashboard_data <- reactiveValues(out_bs = tibble(balance_sheet = character(), bs_base = double()),
@@ -125,4 +125,8 @@ shinyServer(function(input, output, session) {
             write.csv(test_data$onerosity_df, file)
         }
     )
+    
+    observeEvent(input$console, {
+        event_status$console = TRUE 
+    })
 })

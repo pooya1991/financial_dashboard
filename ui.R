@@ -12,6 +12,7 @@ qts <- c("Q1", "Q2", "Q3", "Q4")
 shinyUI(dashboardPage(
     dashboardHeader(title = "PAA Unearned Model"),
     dashboardSidebar(
+        tags$style(type="text/css", "#dl_on_df {color: black;font-family: Courier New}"),
         tabsetPanel(
             tabPanel(title = "Run Settings",
                      div(id = "run_settings",
@@ -38,7 +39,11 @@ shinyUI(dashboardPage(
                      br(),
                      actionButton("run1_base", "Run1 - Base", width = 150),
                      br(),br(),br(),
-                     downloadButton("dl_on_df", "Downlad Onerousity Data", width = 150)
+                     actionButton("console", "Go to console", width = 150)
+            ),
+            tabPanel(title = "Downloads",
+                     # downloadButton("dl_att_payments", "Attritional Payments", width = 150,  class ="butt1"),
+                     downloadButton("dl_on_df", "Onerousity Data", width = 150)
             )
         )
     ),
@@ -47,7 +52,8 @@ shinyUI(dashboardPage(
         shinyjs::useShinyjs(),
         tabsetPanel(
             tabPanel(title = "balance_sheet",
-                     DT::DTOutput("balance_sheet")
+                     DT::DTOutput("balance_sheet"),
+                     downloadButton("dl_btn", "download")
             ),
             tabPanel(title = "income_statement",
                      DT::DTOutput("income_statement")
