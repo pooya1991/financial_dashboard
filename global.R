@@ -40,6 +40,9 @@ rowCallback_bs <- c(
     "    }",
     "  }",
     "DTWidget.formatRound(this, row, dat, 1, 0, 3, ',', '.')",
+    "DTWidget.formatRound(this, row, dat, 2, 0, 3, ',', '.')",
+    "DTWidget.formatRound(this, row, dat, 3, 0, 3, ',', '.')",
+    "DTWidget.formatRound(this, row, dat, 4, 0, 3, ',', '.')",
     "}"
 )
 
@@ -59,5 +62,11 @@ rowCallback_is <- c(
     "  }",
     "DTWidget.formatRound(this, row, dat, 1, 0, 3, ',', '.')",
     "var value=dat[1]; $(this.api().cell(row, 1).node()).css({'color':isNaN(parseFloat(value)) ? '' : value <= -1e-5 ? 'red' : 'black'})",
+    "DTWidget.formatRound(this, row, dat, 2, 0, 3, ',', '.')",
+    "var value=dat[2]; $(this.api().cell(row, 2).node()).css({'color':isNaN(parseFloat(value)) ? '' : value <= -1e-5 ? 'red' : 'black'})",
+    "DTWidget.formatRound(this, row, dat, 3, 0, 3, ',', '.')",
+    "var value=dat[3]; $(this.api().cell(row, 3).node()).css({'color':isNaN(parseFloat(value)) ? '' : value <= -1e-5 ? 'red' : 'black'})",
+    "DTWidget.formatRound(this, row, dat, 4, 0, 3, ',', '.')",
+    "var value=dat[4]; $(this.api().cell(row, 4).node()).css({'color':isNaN(parseFloat(value)) ? '' : value <= -1e-5 ? 'red' : 'black'})",
     "}"
 )

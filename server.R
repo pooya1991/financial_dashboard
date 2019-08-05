@@ -98,7 +98,11 @@ shinyServer(function(input, output, session) {
             footer = NULL
         ))
         dashboard_data$out_bs <- balance_sheet2
+        source("R/dashboard_bs.R")
+        dashboard_data$out_bs <- cbind(dashboard_data$out_bs, bs_exp, bs_act_ass, bs_qt_end)
         dashboard_data$out_is <- income_statement2
+        source("R/dashboard_is.R")
+        dashboard_data$out_is <- cbind(dashboard_data$out_is, is_exp, is_act_ass, is_qt_end)
         if (event_status$console) browser()
     })
     
@@ -107,14 +111,16 @@ shinyServer(function(input, output, session) {
     
     output$balance_sheet <- DT::renderDT({
         DT::datatable(dashboard_data$out_bs,
-                      colnames = c("Balance Sheet", "Base"), class = "strip", 
+                      colnames = c("Balance Sheet", "Base", "Experience", "Acturial Assumptions", "Quarter End"),
+                      class = "strip", 
                       options = list(paging = FALSE, searching = FALSE, info = FALSE,
                                      rowCallback = DT::JS(rowCallback_bs)))
     })
     
     output$income_statement <- DT::renderDT({
         DT::datatable(dashboard_data$out_is,
-                      colnames = c("Income Statement", "Base"), class = "strip",
+                      colnames = c("Income Statement", "Base", "Experience", "Acturial Assumptions", "Quarter End"),
+                      class = "strip",
                       options = list(paging = FALSE, searching = FALSE, info = FALSE,
                                      rowCallback = DT::JS(rowCallback_is)))
     })
