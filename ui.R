@@ -36,7 +36,9 @@ shinyUI(dashboardPage(
                      br(),
                      actionButton("coh_form", "Cohort Formation", width = 150),
                      br(),
-                     actionButton("run1_base", "Run1 - Base", width = 150)
+                     actionButton("run1_base", "Run1 - Base", width = 150),
+                     br(),br(),br(),
+                     downloadButton("dl_on_df", "Downlad Onerousity Data", width = 150)
             )
         )
     ),
