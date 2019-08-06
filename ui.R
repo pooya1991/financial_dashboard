@@ -54,7 +54,7 @@ shinyUI(dashboardPage(
             tabPanel(title = "balance_sheet",
                      DT::DTOutput("balance_sheet"),
                      div(style = "position:absolute;down:1em;",
-                         downloadButton("dl_btn_bs", "download")
+                         downloadButton("dl_btn_cf", "download")
                      ),
                      div(style = "position:absolute;right:1em;", 
                          actionButton('show_cols_bs', 'Show all columns', width = 120)
@@ -62,9 +62,9 @@ shinyUI(dashboardPage(
             ),
             tabPanel(title = "income_statement",
                      DT::DTOutput("income_statement"),
-                     div(style = "position:absolute;down:1em;",
-                         downloadButton("dl_btn_is", "download")
-                     ),
+                     # div(style = "position:absolute;down:1em;",
+                     #     downloadButton("dl_btn_cf", "download")
+                     # ),
                      div(style = "position:absolute;right:1em;", 
                          actionButton('show_cols_is', 'Show all columns', width = 120)
                      )

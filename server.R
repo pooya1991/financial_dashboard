@@ -30,7 +30,7 @@ shinyServer(function(input, output, session) {
         input$pas_data$datapath        
     })
     
-    test_data <- reactiveValues(onerosity_df = NULL)
+    test_data <- reactiveValues(onerosity_df = NULL, cf_df = NULL)
     event_status <- reactiveValues(onerousity_test = FALSE, cohort_test = FALSE, console = FALSE,
                                    show_cols_bs = FALSE, show_cols_is = FALSE)
     
@@ -107,6 +107,10 @@ shinyServer(function(input, output, session) {
         source("R/dashboard_is.R")
         dashboard_data$out_is <- cbind(dashboard_data$out_is, is_exp, is_act_ass, is_qt_end)
         
+        test_data$cf_df <- rbind(qt_cf$cashflows, qt_cf$attr_payments_mat) %>% 
+            as.data.frame() %>% tibble::rownames_to_column() %>% 
+            set_names(c("cashflow", term))
+        
         if (event_status$console) browser()
     })
     
@@ -159,6 +163,13 @@ shinyServer(function(input, output, session) {
         filename = "onerousity_df.csv",
         content = function(file) {
             write.csv(test_data$onerosity_df, file)
+        }
+    )
+    
+    output$dl_btn_cf <- downloadHandler(
+        filename = "cashflow.csv",
+        content = function(file) {
+            write.csv(test_data$cf_df, file, row.names = FALSE)
         }
     )
     
