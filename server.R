@@ -31,7 +31,8 @@ shinyServer(function(input, output, session) {
     })
     
     test_data <- reactiveValues(onerosity_df = NULL)
-    event_status <- reactiveValues(onerousity_test = FALSE, cohort_test = FALSE, console = FALSE)
+    event_status <- reactiveValues(onerousity_test = FALSE, cohort_test = FALSE, console = FALSE,
+                                   show_cols_bs = FALSE, show_cols_is = FALSE)
     
     observeEvent(input$run_onerousity, {
         if (is.null(input$input_file) | is.null(input$pas_data)) {
@@ -97,30 +98,59 @@ shinyServer(function(input, output, session) {
             easyClose = TRUE,
             footer = NULL
         ))
+        
         dashboard_data$out_bs <- balance_sheet2
         source("R/dashboard_bs.R")
         dashboard_data$out_bs <- cbind(dashboard_data$out_bs, bs_exp, bs_act_ass, bs_qt_end)
+        
         dashboard_data$out_is <- income_statement2
         source("R/dashboard_is.R")
         dashboard_data$out_is <- cbind(dashboard_data$out_is, is_exp, is_act_ass, is_qt_end)
+        
         if (event_status$console) browser()
+    })
+    
+    observeEvent(input$show_cols_bs, {
+        val <- as.logical(input$show_cols_bs %% 2)
+        updateActionButton(session, "show_cols_bs",
+                           label = ifelse(val, "Keep only base", 'Show all columns'))
+        event_status$show_cols_bs <- val
+    })
+    
+    observeEvent(input$show_cols_is, {
+        val <-as.logical(input$show_cols_is %% 2)
+        updateActionButton(session, "show_cols_is",
+                           label = ifelse(val, "Keep only base", 'Show all columns'))
+        event_status$show_cols_is <- val
     })
     
     dashboard_data <- reactiveValues(out_bs = tibble(balance_sheet = character(), bs_base = double()),
                                      out_is = tibble(income_statement = character(), is_base = double()))
     
     output$balance_sheet <- DT::renderDT({
-        DT::datatable(dashboard_data$out_bs,
-                      colnames = c("Balance Sheet", "Base", "Experience", "Acturial Assumptions", "Quarter End"),
-                      class = "strip", 
+        if (event_status$show_cols_bs) {
+            cl_nms <- c("Balance Sheet", "Base", "Experience", "Acturial Assumptions", "Quarter End")
+            dash_data <- dashboard_data$out_bs
+        } else {
+            cl_nms <- c("Balance Sheet", "Base")
+            dash_data <- dashboard_data$out_bs[ , 1, drop = FALSE]
+        }
+        
+        DT::datatable(dash_data, colnames = cl_nms, class = "strip", 
                       options = list(paging = FALSE, searching = FALSE, info = FALSE,
                                      rowCallback = DT::JS(rowCallback_bs)))
     })
     
     output$income_statement <- DT::renderDT({
-        DT::datatable(dashboard_data$out_is,
-                      colnames = c("Income Statement", "Base", "Experience", "Acturial Assumptions", "Quarter End"),
-                      class = "strip",
+        if (event_status$show_cols_is) {
+            cl_nms <- c("Income Statement", "Base", "Experience", "Acturial Assumptions", "Quarter End")
+            dash_data <- dashboard_data$out_is
+        } else {
+            cl_nms <- c("Income Statement", "Base")
+            dash_data <- dashboard_data$out_is[ , 1, drop = FALSE]
+        }
+        
+        DT::datatable(dash_data, colnames = cl_nms, class = "strip",
                       options = list(paging = FALSE, searching = FALSE, info = FALSE,
                                      rowCallback = DT::JS(rowCallback_is)))
     })
