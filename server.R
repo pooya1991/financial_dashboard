@@ -117,14 +117,14 @@ shinyServer(function(input, output, session) {
     observeEvent(input$show_cols_bs, {
         val <- as.logical(input$show_cols_bs %% 2)
         updateActionButton(session, "show_cols_bs",
-                           label = ifelse(val, "Keep only base", 'Show all columns'))
+                           label = ifelse(val, "Keep only base", 'Other Runs'))
         event_status$show_cols_bs <- val
     })
     
     observeEvent(input$show_cols_is, {
         val <-as.logical(input$show_cols_is %% 2)
         updateActionButton(session, "show_cols_is",
-                           label = ifelse(val, "Keep only base", 'Show all columns'))
+                           label = ifelse(val, "Keep only base", 'Other Runs'))
         event_status$show_cols_is <- val
     })
     

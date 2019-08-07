@@ -57,7 +57,7 @@ shinyUI(dashboardPage(
                          downloadButton("dl_btn_cf", "download")
                      ),
                      div(style = "position:absolute;right:1em;", 
-                         actionButton('show_cols_bs', 'Show all columns', width = 120)
+                         actionButton('show_cols_bs', 'Other Runs', width = 120)
                      )
             ),
             tabPanel(title = "income_statement",
@@ -66,7 +66,7 @@ shinyUI(dashboardPage(
                      #     downloadButton("dl_btn_cf", "download")
                      # ),
                      div(style = "position:absolute;right:1em;", 
-                         actionButton('show_cols_is', 'Show all columns', width = 120)
+                         actionButton('show_cols_is', 'Other Runs', width = 120)
                      )
             )
         )
